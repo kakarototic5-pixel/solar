@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Le système solaire expliqué simplement : les 8 planètes, les planètes naines, les lunes remarquables, les astéroïdes, les comètes et une simulation 3D interactive de la NASA. Projet scolaire de Yassir et Med Idaddi." />
+  <meta name="theme-color" content="#06090f" />
+
+  <title>Espace – Le Système Solaire</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <script>document.documentElement.classList.add("js");</script>
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+
+  <a class="skipLink" href="#main">Aller au contenu principal</a>
+
+  <!-- Barre de progression -->
+  <div class="progressBar" aria-hidden="true">
+    <span class="progressBar__fill" id="progressFill"></span>
+  </div>
+
+  <!-- Champ d'étoiles (canvas) -->
+  <canvas id="starfield" class="starfield" aria-hidden="true"></canvas>
+
+  <!-- ================= HEADER ================= -->
+  <header class="header">
+    <div class="header__inner">
+
+      <a class="brand" href="mailto:medkakaroto12@gmail.com"
+         aria-label="Envoyer un email à Yassir et Med Idaddi">
+        <img class="brand__logo" src="img/logo.png" alt="Logo du projet Espace" />
+      </a>
+
+      <nav class="navigation" aria-label="Navigation principale">
+        <button class="navToggle" type="button" aria-expanded="false" aria-controls="navList">
+          <span class="navToggle__bars" aria-hidden="true"></span>
+          <span class="srOnly">Ouvrir le menu</span>
+        </button>
+
+        <ul class="navList" id="navList">
+          <li><a href="#hero">Accueil</a></li>
+          <li><a href="#planets">Aperçu</a></li>
+          <li><a href="#moons">Lunes</a></li>
+          <li><a href="#space-rocks">Astéroïdes</a></li>
+          <li><a href="#missions">Missions</a></li>
+          <li><a href="#viewer">Simulation 3D</a></li>
+          <li><a href="#details">Détails</a></li>
+        </ul>
+      </nav>
+
+      <button class="themeToggle" id="themeToggle" type="button"
+              aria-label="Basculer le thème clair / sombre">
+        <span class="themeToggle__icon" aria-hidden="true">🌙</span>
+      </button>
+
+    </div>
+  </header>
+
+  <!-- ================= CONTENU PRINCIPAL ================= -->
+  <main id="main">
+
+    <!-- ---------- HERO ---------- -->
+    <section id="hero" class="hero reveal">
+      <div class="heroContent">
+        <p class="eyebrow">Projet scolaire · 2026</p>
+
+        <h1 class="title">Le Système Solaire</h1>
+
+        <p class="name">Par <strong>Yassir</strong> et <strong>Med Idaddi</strong></p>
+
+        <p class="heroText">
+          Un voyage de 4,6 milliards d'années : des huit planètes aux planètes naines,
+          des lunes glacées aux comètes, découvrez tout ce qui gravite autour de notre Soleil.
+        </p>
+
+        <div class="heroBtns">
+          <a class="btn btn--primary" href="img/Présentation1.pptx.pptx" download="Espace.pptx">
+            <span>Télécharger le PPTX</span>
+            <img src="download.svg" alt="" width="18" height="18" aria-hidden="true" />
+          </a>
+
+          <a class="btn btn--ghost" href="#viewer">Explorer en 3D</a>
+        </div>
+
+        <ul class="heroMeta">
+          <li><strong>8</strong><span>planètes</span></li>
+          <li><strong>5</strong><span>planètes naines</span></li>
+          <li><strong>891+</strong><span>lunes confirmées</span></li>
+          <li><strong>1</strong><span>étoile</span></li>
+        </ul>
+      </div>
+
+      <div class="heroMedia">
+        <img class="heroImg" src="img/istockphoto-911468930-170667a.jpg"
+          alt="Illustration de l'espace et des planètes du système solaire" />
+      </div>
+    </section>
+
+    <!-- ---------- GRILLE DES PLANÈTES ---------- -->
+    <section id="planets" class="planets">
+      <header class="sectionHead reveal">
+        <p class="eyebrow">Aperçu</p>
+        <h2 class="sectionTitle">Les corps du système solaire</h2>
+        <p class="sectionLead">Filtrez par type, puis sélectionnez un astre pour voir sa fiche.</p>
+      </header>
+
+      <!-- Filtres -->
+      <div class="filters reveal" role="tablist" aria-label="Filtrer les corps célestes">
+        <button class="filterChip is-active" data-filter="all" role="tab" aria-selected="true">
+          Tous <span class="filterChip__count">13</span>
+        </button>
+        <button class="filterChip" data-filter="tellurique" role="tab" aria-selected="false">
+          Telluriques <span class="filterChip__count">4</span>
+        </button>
+        <button class="filterChip" data-filter="gazeuse" role="tab" aria-selected="false">
+          Gazeuses <span class="filterChip__count">2</span>
+        </button>
+        <button class="filterChip" data-filter="glacee" role="tab" aria-selected="false">
+          Glacées <span class="filterChip__count">2</span>
+        </button>
+        <button class="filterChip" data-filter="naine" role="tab" aria-selected="false">
+          Naines <span class="filterChip__count">5</span>
+        </button>
+      </div>
+
+      <div class="planetGrid" id="planetGrid">
+
+        <!-- Planètes telluriques -->
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Mercure" data-type="tellurique" aria-label="Afficher la fiche de Mercure">
+          <span class="badge badge--tellurique">Tellurique</span>
+          <img src="img/Design_sans_titre-removebg-preview.png" alt="Mercure" loading="lazy" />
+          <h3>Mercure</h3>
+          <p>La planète la plus proche du Soleil.</p>
+        </article>
+
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Vénus" data-type="tellurique" aria-label="Afficher la fiche de Vénus">
+          <span class="badge badge--tellurique">Tellurique</span>
+          <img src="img/venus-mariner-10-pia23791-1920x640-1-removebg-preview.png" alt="Vénus" loading="lazy" />
+          <h3>Vénus</h3>
+          <p>Très chaude à cause de son effet de serre.</p>
+        </article>
+
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Terre" data-type="tellurique" aria-label="Afficher la fiche de la Terre">
+          <span class="badge badge--tellurique">Tellurique</span>
+          <img src="img/Terre-removebg-preview.png" alt="Terre" loading="lazy" />
+          <h3>Terre</h3>
+          <p>La seule planète connue abritant la vie.</p>
+        </article>
+
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Mars" data-type="tellurique" aria-label="Afficher la fiche de Mars">
+          <span class="badge badge--tellurique">Tellurique</span>
+          <img src="img/Mars-removebg-preview.png" alt="Mars" loading="lazy" />
+          <h3>Mars</h3>
+          <p>La planète rouge.</p>
+        </article>
+
+        <!-- Géantes gazeuses -->
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Jupiter" data-type="gazeuse" aria-label="Afficher la fiche de Jupiter">
+          <span class="badge badge--gazeuse">Gazeuse</span>
+          <img src="img/jupiter-marble-pia22946-16x9-1-removebg-preview.png" alt="Jupiter" loading="lazy" />
+          <h3>Jupiter</h3>
+          <p>La plus grande planète du système solaire.</p>
+        </article>
+
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Saturne" data-type="gazeuse" aria-label="Afficher la fiche de Saturne">
+          <span class="badge badge--gazeuse">Gazeuse</span>
+          <img src="img/Saturn-removebg-preview.png" alt="Saturne" loading="lazy" />
+          <h3>Saturne</h3>
+          <p>Célèbre pour ses anneaux.</p>
+        </article>
+
+        <!-- Géantes de glace -->
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Uranus" data-type="glacee" aria-label="Afficher la fiche d'Uranus">
+          <span class="badge badge--glacee">Glacée</span>
+          <img src="img/uranus-removebg-preview.png" alt="Uranus" loading="lazy" />
+          <h3>Uranus</h3>
+          <p>Une planète glacée inclinée.</p>
+        </article>
+
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Neptune" data-type="glacee" aria-label="Afficher la fiche de Neptune">
+          <span class="badge badge--glacee">Glacée</span>
+          <img src="img/neptune-removebg-preview.png" alt="Neptune" loading="lazy" />
+          <h3>Neptune</h3>
+          <p>La planète la plus éloignée du Soleil.</p>
+        </article>
+
+        <!-- Planètes naines -->
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Cérès" data-type="naine" aria-label="Afficher la fiche de Cérès">
+          <span class="badge badge--naine">Naine</span>
+          <img src="img/ceres.png" alt="Cérès" loading="lazy" />
+          <h3>Cérès</h3>
+          <p>La plus grande planète naine de la ceinture d'astéroïdes.</p>
+        </article>
+
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Pluton" data-type="naine" aria-label="Afficher la fiche de Pluton">
+          <span class="badge badge--naine">Naine</span>
+          <img src="img/pluton.png" alt="Pluton" loading="lazy" />
+          <h3>Pluton</h3>
+          <p>Reclassée planète naine en 2006.</p>
+        </article>
+
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Hauméa" data-type="naine" aria-label="Afficher la fiche de Hauméa">
+          <span class="badge badge--naine">Naine</span>
+          <img src="img/haumea.png" alt="Hauméa" loading="lazy" />
+          <h3>Hauméa</h3>
+          <p>Une planète naine allongée qui tourne très vite.</p>
+        </article>
+
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Makémaké" data-type="naine" aria-label="Afficher la fiche de Makémaké">
+          <span class="badge badge--naine">Naine</span>
+          <img src="img/makemake.png" alt="Makémaké" loading="lazy" />
+          <h3>Makémaké</h3>
+          <p>Une planète naine rougeâtre de la ceinture de Kuiper.</p>
+        </article>
+
+        <article class="planetCard reveal" role="button" tabindex="0"
+          data-planet="Éris" data-type="naine" aria-label="Afficher la fiche d'Éris">
+          <span class="badge badge--naine">Naine</span>
+          <img src="img/eris.png" alt="Éris" loading="lazy" />
+          <h3>Éris</h3>
+          <p>Aussi massive que Pluton, elle a motivé sa reclassification.</p>
+        </article>
+
+      </div>
+
+      <p class="emptyState" id="emptyState" hidden>Aucun astre dans cette catégorie.</p>
+    </section>
+
+    <!-- ---------- SIMULATION 3D NASA ---------- -->
+    <section id="viewer" class="viewer">
+      <header class="sectionHead reveal">
+        <p class="eyebrow">Simulation</p>
+        <h2 class="sectionTitle">Explorez en 3D</h2>
+        <p class="sectionLead">
+          Visualisation interactive du système solaire fournie par la NASA.
+        </p>
+      </header>
+
+      <div class="viewerFrame reveal">
+        <iframe src="https://eyes.nasa.gov/apps/solar-system/#/home?interactPrompt=true&collapseTimeControls=true&surfaceMapTiling=true&hd=true&minorMoons=true&heliosphere=true" allowfullscreen ></iframe>
+          loading="lazy" allowfullscreen></iframe>
+      </div>
+    </section>
+
+    <!-- ---------- FICHES DÉTAILLÉES DES PLANÈTES ---------- -->
+    <section id="details" class="planets-sections">
+      <header class="sectionHead reveal">
+        <p class="eyebrow">Fiches</p>
+        <h2 class="sectionTitle">Les planètes en détail</h2>
+      </header>
+
+      <article class="planet reveal">
+        <div class="planet__media">
+          <img src="img/Design_sans_titre-removebg-preview.png" alt="Mercure" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">01</span>
+          <h3>Mercure</h3>
+          <p>Mercure est la planète la plus proche du Soleil. Dépourvue d'atmosphère significative, elle subit des écarts de température extrêmes entre le jour et la nuit (jusqu'à 430 °C le jour, −180 °C la nuit).</p>
+          <ul class="planet__stats">
+            <li><span>Distance au Soleil</span><strong>57,9 M km</strong></li>
+            <li><span>Diamètre</span><strong>4 879 km</strong></li>
+            <li><span>Un jour dure</span><strong>58,6 jours</strong></li>
+            <li><span>Satellites</span><strong>0</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reverse reveal">
+        <div class="planet__media">
+          <img src="img/venus-mariner-10-pia23791-1920x640-1-removebg-preview.png" alt="Vénus" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">02</span>
+          <h3>Vénus</h3>
+          <p>Vénus est la planète la plus chaude du système solaire à cause de son atmosphère très dense, composée majoritairement de dioxyde de carbone. Sa pression au sol est 92 fois plus élevée que sur Terre.</p>
+          <ul class="planet__stats">
+            <li><span>Distance au Soleil</span><strong>108,2 M km</strong></li>
+            <li><span>Diamètre</span><strong>12 104 km</strong></li>
+            <li><span>Température</span><strong>+465 °C</strong></li>
+            <li><span>Satellites</span><strong>0</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reveal">
+        <div class="planet__media">
+          <img src="img/Terre-removebg-preview.png" alt="Terre" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">03</span>
+          <h3>Terre</h3>
+          <p>La Terre est la seule planète connue qui abrite la vie. Son atmosphère riche en oxygène, son eau liquide et son champ magnétique protecteur en font un monde unique dans le système solaire.</p>
+          <ul class="planet__stats">
+            <li><span>Distance au Soleil</span><strong>149,6 M km</strong></li>
+            <li><span>Diamètre</span><strong>12 742 km</strong></li>
+            <li><span>Un jour dure</span><strong>23 h 56</strong></li>
+            <li><span>Satellites</span><strong>1 (la Lune)</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reverse reveal">
+        <div class="planet__media">
+          <img src="img/Mars-removebg-preview.png" alt="Mars" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">04</span>
+          <h3>Mars</h3>
+          <p>Mars est surnommée la planète rouge à cause de l'oxyde de fer présent à sa surface. Elle abrite le plus grand volcan du système solaire, Olympus Mons (21 km de haut), et pourrait servir à une future colonisation humaine.</p>
+          <ul class="planet__stats">
+            <li><span>Distance au Soleil</span><strong>227,9 M km</strong></li>
+            <li><span>Diamètre</span><strong>6 779 km</strong></li>
+            <li><span>Un jour dure</span><strong>24 h 37</strong></li>
+            <li><span>Satellites</span><strong>2 (Phobos, Déimos)</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reveal">
+        <div class="planet__media">
+          <img src="img/jupiter-marble-pia22946-16x9-1-removebg-preview.png" alt="Jupiter" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">05</span>
+          <h3>Jupiter</h3>
+          <p>Jupiter est la plus grande planète du système solaire : 11 fois le diamètre de la Terre. C'est une géante gazeuse dont la Grande Tache Rouge est une tempête plus large que notre planète, active depuis plus de 350 ans.</p>
+          <ul class="planet__stats">
+            <li><span>Distance au Soleil</span><strong>778,5 M km</strong></li>
+            <li><span>Diamètre</span><strong>142 984 km</strong></li>
+            <li><span>Un jour dure</span><strong>9 h 56</strong></li>
+            <li><span>Satellites</span><strong>plus de 95</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reverse reveal">
+        <div class="planet__media">
+          <img src="img/Saturn-removebg-preview.png" alt="Saturne" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">06</span>
+          <h3>Saturne</h3>
+          <p>Saturne est célèbre pour ses magnifiques anneaux, composés de glace et de poussière. Elle est si peu dense qu'elle flotterait sur l'eau — c'est la seule planète du système solaire dans ce cas.</p>
+          <ul class="planet__stats">
+            <li><span>Distance au Soleil</span><strong>1,43 Md km</strong></li>
+            <li><span>Diamètre</span><strong>120 536 km</strong></li>
+            <li><span>Un jour dure</span><strong>10 h 42</strong></li>
+            <li><span>Satellites</span><strong>plus de 140</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reveal">
+        <div class="planet__media">
+          <img src="img/uranus-removebg-preview.png" alt="Uranus" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">07</span>
+          <h3>Uranus</h3>
+          <p>Uranus est une planète glacée qui tourne presque couchée sur elle-même : son axe est incliné d'environ 98° par rapport à son orbite. Elle effectue un tour complet du Soleil en 84 années terrestres.</p>
+          <ul class="planet__stats">
+            <li><span>Distance au Soleil</span><strong>2,87 Md km</strong></li>
+            <li><span>Diamètre</span><strong>51 118 km</strong></li>
+            <li><span>Inclinaison</span><strong>98°</strong></li>
+            <li><span>Satellites</span><strong>plus de 27</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reverse reveal">
+        <div class="planet__media">
+          <img src="img/neptune-removebg-preview.png" alt="Neptune" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">08</span>
+          <h3>Neptune</h3>
+          <p>Neptune est la planète la plus éloignée du Soleil. Elle est balayée par les vents les plus violents du système solaire, qui peuvent dépasser 2 000 km/h. Une année neptunienne dure 165 années terrestres.</p>
+          <ul class="planet__stats">
+            <li><span>Distance au Soleil</span><strong>4,50 Md km</strong></li>
+            <li><span>Diamètre</span><strong>49 528 km</strong></li>
+            <li><span>Vents</span><strong>jusqu'à 2 100 km/h</strong></li>
+            <li><span>Satellites</span><strong>plus de 14</strong></li>
+          </ul>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ---------- LUNES REMARQUABLES ---------- -->
+    <section id="moons" class="planets-sections">
+      <header class="sectionHead reveal">
+        <p class="eyebrow">Satellites naturels</p>
+        <h2 class="sectionTitle">Lunes remarquables</h2>
+        <p class="sectionLead">Le système solaire compte plus de 891 lunes confirmées. En voici quelques-unes parmi les plus fascinantes.</p>
+      </header>
+
+      <article class="planet reveal">
+        <div class="planet__media">
+          <img src="img/europa.png" alt="Europe" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">🌕 Lune de Jupiter</span>
+          <h3>Europe</h3>
+          <p>Sous sa croûte de glace, Europe abrite un océan d'eau salée contenant deux fois plus d'eau que tous les océans terrestres réunis. La mission Europa Clipper, lancée en octobre 2024, doit déterminer si cet environnement pourrait abriter la vie.</p>
+          <ul class="planet__stats">
+            <li><span>Planète hôte</span><strong>Jupiter</strong></li>
+            <li><span>Diamètre</span><strong>3 122 km</strong></li>
+            <li><span>Caractéristique</span><strong>Océan souterrain</strong></li>
+            <li><span>Découverte</span><strong>1610 (Galilée)</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reverse reveal">
+        <div class="planet__media">
+          <img src="img/titan.png" alt="Titan" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">🌕 Lune de Saturne</span>
+          <h3>Titan</h3>
+          <p>Titan est plus grande que Mercure. Elle possède une atmosphère épaisse et un cycle du méthane : des pluies d'hydrocarbures liquides tombent sur des montagnes de glace, formant rivières, lacs et mers. C'est la seule lune connue avec une atmosphère dense.</p>
+          <ul class="planet__stats">
+            <li><span>Planète hôte</span><strong>Saturne</strong></li>
+            <li><span>Diamètre</span><strong>5 150 km</strong></li>
+            <li><span>Caractéristique</span><strong>Atmosphère dense, mers de méthane</strong></li>
+            <li><span>Découverte</span><strong>1655 (Huygens)</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reveal">
+        <div class="planet__media">
+          <img src="img/encelade.png" alt="Encelade" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">🌕 Lune de Saturne</span>
+          <h3>Encelade</h3>
+          <p>Cette petite lune glacée projette des geysers de vapeur d'eau et de particules de glace depuis un océan souterrain, visible au pôle sud. C'est l'une des cibles les plus prometteuses dans la recherche de vie extraterrestre.</p>
+          <ul class="planet__stats">
+            <li><span>Planète hôte</span><strong>Saturne</strong></li>
+            <li><span>Diamètre</span><strong>504 km</strong></li>
+            <li><span>Caractéristique</span><strong>Geysers actifs</strong></li>
+            <li><span>Découverte</span><strong>1789 (Herschel)</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reverse reveal">
+        <div class="planet__media">
+          <img src="img/io.png" alt="Io" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">🌕 Lune de Jupiter</span>
+          <h3>Io</h3>
+          <p>Io est le corps le plus volcaniquement actif du système solaire : plus de 400 volcans actifs y sont recensés. Les forces de marée de Jupiter chauffent son intérieur et projettent des panaches de soufre jusqu'à 500 km d'altitude.</p>
+          <ul class="planet__stats">
+            <li><span>Planète hôte</span><strong>Jupiter</strong></li>
+            <li><span>Diamètre</span><strong>3 643 km</strong></li>
+            <li><span>Caractéristique</span><strong>Volcanisme extrême</strong></li>
+            <li><span>Découverte</span><strong>1610 (Galilée)</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reveal">
+        <div class="planet__media">
+          <img src="img/ganymede.png" alt="Ganymède" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">🌕 Lune de Jupiter</span>
+          <h3>Ganymède</h3>
+          <p>Ganymède est la plus grande lune du système solaire — plus grande que Mercure. Elle est aussi la seule lune connue à posséder son propre champ magnétique. La mission JUICE de l'ESA doit l'explorer à partir de 2031.</p>
+          <ul class="planet__stats">
+            <li><span>Planète hôte</span><strong>Jupiter</strong></li>
+            <li><span>Diamètre</span><strong>5 268 km</strong></li>
+            <li><span>Caractéristique</span><strong>Champ magnétique propre</strong></li>
+            <li><span>Découverte</span><strong>1610 (Galilée)</strong></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="planet reverse reveal">
+        <div class="planet__media">
+          <img src="img/triton.png" alt="Triton" loading="lazy" />
+        </div>
+        <div class="planet__info">
+          <span class="planet__index">🌕 Lune de Neptune</span>
+          <h3>Triton</h3>
+          <p>Triton est la plus grande lune de Neptune. Elle orbite en sens inverse de la rotation de sa planète — un cas unique parmi les grandes lunes. Des cryovolcans y projettent de l'azote glacé. Elle serait un objet de la ceinture de Kuiper capturé par Neptune.</p>
+          <ul class="planet__stats">
+            <li><span>Planète hôte</span><strong>Neptune</strong></li>
+            <li><span>Diamètre</span><strong>2 707 km</strong></li>
+            <li><span>Caractéristique</span><strong>Orbite rétrograde, cryovolcans</strong></li>
+            <li><span>Découverte</span><strong>1846 (Lassell)</strong></li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <!-- ---------- ASTÉROÏDES, COMÈTES, MÉTÉORES ---------- -->
+    <section id="space-rocks" class="planets">
+      <header class="sectionHead reveal">
+        <p class="eyebrow">Petits corps</p>
+        <h2 class="sectionTitle">Astéroïdes, comètes et météores</h2>
+        <p class="sectionLead">Le système solaire ne se résume pas aux planètes : des millions de petits corps orbitent autour du Soleil.</p>
+      </header>
+
+      <div class="planetGrid">
+        <article class="planetCard reveal">
+          <span class="badge badge--tellurique">Astéroïdes</span>
+          <h3>Astéroïdes</h3>
+          <p>Ce sont des mondes rocheux et sans air qui orbitent autour du Soleil. Ce sont des vestiges de la formation du système solaire. La ceinture principale, entre Mars et Jupiter, en contient des centaines de milliers.</p>
+        </article>
+
+        <article class="planetCard reveal">
+          <span class="badge badge--glacee">Comètes</span>
+          <h3>Comètes</h3>
+          <p>Ce sont des « boules de neige sales » : un noyau glacé contenant des gaz gelés, de la roche et de la poussière. Près du Soleil, la glace se sublime et forme une chevelure et deux queues (poussière et gaz).</p>
+        </article>
+
+        <article class="planetCard reveal">
+          <span class="badge badge--gazeuse">Météores</span>
+          <h3>Météores</h3>
+          <p>Lorsqu'un météoroïde entre dans l'atmosphère terrestre à grande vitesse, la friction le fait briller : c'est une « étoile filante ». Les fragments qui atteignent le sol sont des météorites.</p>
+        </article>
+
+        <article class="planetCard reveal">
+          <span class="badge badge--naine">Ceinture de Kuiper</span>
+          <h3>Ceinture de Kuiper</h3>
+          <p>Au-delà de Neptune s'étend un vaste anneau glacé peuplé de planètes naines (Pluton, Hauméa, Makémaké, Éris) et de millions d'objets transneptuniens. C'est le vestige des origines du système solaire.</p>
+        </article>
+
+        <article class="planetCard reveal">
+          <span class="badge badge--glacee">Nuage de Oort</span>
+          <h3>Nuage de Oort</h3>
+          <p>Une immense coquille hypothétique de corps glacés, située entre 2 000 et 100 000 UA du Soleil. C'est de là que proviendraient les comètes à longue période.</p>
+        </article>
+
+        <article class="planetCard reveal">
+          <span class="badge badge--tellurique">Ceinture d'astéroïdes</span>
+          <h3>Ceinture principale</h3>
+          <p>Située entre Mars et Jupiter, elle abrite plus d'un million d'astéroïdes de plus de 1 km. Le plus grand, Cérès, a été reclassé planète naine en 2006.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ---------- MISSIONS SPATIALES ---------- -->
+    <section id="missions" class="planets">
+      <header class="sectionHead reveal">
+        <p class="eyebrow">Exploration</p>
+        <h2 class="sectionTitle">Missions spatiales emblématiques</h2>
+        <p class="sectionLead">L'humanité explore le système solaire depuis plus de 60 ans. Voici quelques missions qui ont marqué l'histoire.</p>
+      </header>
+
+      <div class="planetGrid">
+        <article class="planetCard reveal">
+          <span class="badge badge--gazeuse">Voyager 1 & 2</span>
+          <h3>Voyager</h3>
+          <p>Lancées en 1977, les sondes Voyager ont survolé Jupiter, Saturne, Uranus et Neptune. Elles se trouvent aujourd'hui à plus de 20 milliards de kilomètres de la Terre, explorant la frontière avec l'espace interstellaire.</p>
+        </article>
+
+        <article class="planetCard reveal">
+          <span class="badge badge--tellurique">New Horizons</span>
+          <h3>New Horizons</h3>
+          <p>Lancée en 2006 par la NASA, cette sonde a survolé Pluton en 2015, offrant les premières images détaillées de sa surface et révélant des plaines de glace d'azote.</p>
+        </article>
+
+        <article class="planetCard reveal">
+          <span class="badge badge--glacee">Europa Clipper</span>
+          <h3>Europa Clipper</h3>
+          <p>Lancée en octobre 2024, cette mission étudie Europe, la lune glacée de Jupiter, pour déterminer si son océan souterrain pourrait abriter les conditions de la vie.</p>
+        </article>
+
+        <article class="planetCard reveal">
+          <span class="badge badge--gazeuse">Cassini-Huygens</span>
+          <h3>Cassini-Huygens</h3>
+          <p>En orbite autour de Saturne de 2004 à 2017, cette mission a étudié ses anneaux et ses lunes. La sonde Huygens s'est posée sur Titan en 2005, une première dans le système solaire externe.</p>
+        </article>
+
+        <article class="planetCard reveal">
+          <span class="badge badge--tellurique">Perseverance</span>
+          <h3>Perseverance</h3>
+          <p>Rover de la NASA posé sur Mars en 2021, il recherche des traces de vie ancienne, collecte des échantillons et a fait voler le premier hélicoptère sur une autre planète (Ingenuity).</p>
+        </article>
+
+        <article class="planetCard reveal">
+          <span class="badge badge--glacee">JUICE</span>
+          <h3>JUICE (ESA)</h3>
+          <p>Lancée en 2023 par l'Agence spatiale européenne, la sonde JUICE (JUpiter ICy moons Explorer) doit étudier Ganymède, Europe et Callisto à partir de 2031.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ---------- FORMATION DU SYSTÈME SOLAIRE ---------- -->
+    <section id="formation" class="planets">
+      <header class="sectionHead reveal">
+        <p class="eyebrow">Origines</p>
+        <h2 class="sectionTitle">La formation du système solaire</h2>
+      </header>
+
+      <div class="heroText reveal" style="max-width: 80ch; margin: 0 auto; text-align: center;">
+        <p>Il y a environ 4,6 milliards d'années, un vaste nuage de gaz et de poussière — la nébuleuse solaire — s'est effondré sur lui-même, probablement à cause de l'onde de choc d'une supernova proche. Au centre, la matière s'est concentrée pour former le proto-Soleil, dont les réactions nucléaires se sont allumées. Autour, les grains de poussière se sont agglomérés pour donner naissance à des planétésimaux, puis aux planètes.</p>
+        <p style="margin-top: 1.5rem;">Les planètes telluriques (Mercure, Vénus, Terre, Mars) se sont formées près du Soleil, où il faisait trop chaud pour que les glaces et les gaz subsistent. Plus loin, au-delà de la <em>ligne des glaces</em>, les géantes gazeuses (Jupiter, Saturne) et les géantes de glace (Uranus, Neptune) ont pu capturer d'énormes quantités de gaz et de glace, grossissant jusqu'à dominer le système.</p>
+        <p style="margin-top: 1.5rem;">Aujourd'hui, notre système solaire orbite autour du centre de la Voie lactée à environ 828 000 km/h, et met 230 millions d'années pour en faire le tour.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <p>Projet scolaire – <strong>Le Système Solaire</strong> © 2026</p>
+    <p>Réalisé par Yassir &amp; Med Idaddi · Données : NASA Science</p>
+  </footer>
+
+  <!-- ================= FICHE (modale) ================= -->
+  <dialog id="planetDialog" class="dialog" aria-labelledby="dialogTitle">
+    <button type="button" class="dialog__close" data-close aria-label="Fermer la fiche">✕</button>
+
+    <div class="dialog__body">
+      <img id="dialogImg" class="dialog__img" src="" alt="" />
+      <p class="eyebrow" id="dialogType">Fiche planète</p>
+      <h3 id="dialogTitle" class="dialog__title"></h3>
+      <p id="dialogDesc" class="dialog__desc"></p>
+      <dl id="dialogStats" class="dialog__stats"></dl>
+    </div>
+  </dialog>
+
+  <!-- ================= BOUTONS FLOTTANTS ================= -->
+  <button class="fab" id="spaceFact" type="button">
+    <span aria-hidden="true">🧠</span>
+    <span class="fab__label">Info Espace</span>
+  </button>
+
+  <button class="backToTop" id="backToTop" type="button" aria-label="Retour en haut de la page">
+    <span aria-hidden="true">↑</span>
+  </button>
+
+</body>
+
+</html>
